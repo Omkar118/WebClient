@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.button 
+		{
+  			background-color: #cc00cc;
+  			border: none;
+  			color: white;
+  			padding: 15px 32px;
+  			text-align: center;
+  			text-decoration: none;
+  			display: inline-block;
+  			font-size: 16px;
+  			cursor: pointer;
+
+
+		}
+		.button span {
+			cursor: pointer;
+			display: inline-block;
+			position: relative;
+			transition: 0.5s;
+			}
+
+		.button span:after {
+		  content: '\00bb';
+		  position: absolute;
+		  opacity: 0;
+		  top: 0;
+		  right: -20px;
+		  transition: 0.5s;
+		}
+
+		.button:hover span {
+		  padding-right: 25px;
+		}
+
+		.button:hover span:after {
+		  opacity: 1;
+		  right: 0;
+		}
+	</style>
+ 
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<button onclick="location.href = 'buttonmore.html';" id="myButton" class="button" ><span>Home</span></button><br>
+<h2>Enter the details below</h2>
+
+<label for="title">Title</label><br>
+<input type="text" id="iptitle" name="title"><br>
+
+<label for="Description">Description:</label><br>
+<textarea rows="5" cols="50" name="Description" id="Description"></textarea> 
+<br><br> 
+
+<button id=subpost class="button"><span>Submit post</span></button>
+
+<script>
+	
+	document.getElementById("subpost").onclick=function()
+	{
+		var settings = {
+  							"url": "http://localhost:8080/api/tutorials",
+  							"method": "POST",
+  							"timeout": 0,
+  							"headers": {"Content-Type": "application/json"},
+  							"data": JSON.stringify({"title":document.getElementById("iptitle").value,"description":document.getElementById("Description").value}),
+						};
+
+		$.ajax(settings).done(function (response) {
+  			console.log(response);
+		});
+	}
+
+</script>
+
+
+
+</body>
+</html>

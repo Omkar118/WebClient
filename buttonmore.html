@@ -1,0 +1,211 @@
+<html lang="en"> 
+
+<head> 
+	<meta charset="UTF-8"> 
+	<title>Tutorial information</title> 
+
+	<!-- INCLUDING JQUERY-->
+	<script src= 
+"https://code.jquery.com/jquery-3.5.1.js"> 
+	</script> 
+
+	<!-- CSS FOR STYLING THE PAGE -->
+	<style>
+		input[type=text], select {
+			  width: 20%;
+			  padding: 12px 20px;
+			  margin: 8px 0;
+			  display: inline-block;
+			  border: 1px solid #ccc;
+			  border-radius: 4px;
+			  box-sizing: border-box;
+			  position:relative;
+    	      left:38%;
+		} 
+		table { 
+			margin: 0 auto; 
+			font-size: large; 
+			border: 1px solid black; 
+
+		} 
+
+		h1 { 
+			text-align: center; 
+			color: #006600; 
+			font-size: xx-large; 
+			font-family: 'Gill Sans', 
+				'Gill Sans MT', ' Calibri', 
+				'Trebuchet MS', 'sans-serif'; 
+		} 
+
+		td { 
+			background-color: #E4F5D4; 
+			border: 1px solid black; 
+		} 
+
+		th, 
+		td { 
+			font-weight: bold; 
+			border: 1px solid black; 
+			padding: 10px; 
+			text-align: center; 
+		} 
+
+		td { 
+			font-weight: lighter; 
+		}
+		.button 
+		{
+  			background-color: #cc00cc;
+  			border: none;
+  			color: white;
+  			padding: 15px 32px;
+  			text-align: center;
+  			text-decoration: none;
+  			display: inline-block;
+  			font-size: 16px;
+  			cursor: pointer;
+    		position:relative;
+    		top:50%; 
+    		left:38%;
+		}
+		.button span {
+			cursor: pointer;
+			display: inline-block;
+			position: relative;
+			transition: 0.5s;
+			}
+
+		.button span:after {
+		  content: '\00bb';
+		  position: absolute;
+		  opacity: 0;
+		  top: 0;
+		  right: -20px;
+		  transition: 0.5s;
+		}
+
+		.button:hover span {
+		  padding-right: 25px;
+		}
+
+		.button:hover span:after {
+		  opacity: 1;
+		  right: 0;
+		} 
+	</style> 
+</head> 
+
+<body> 
+	<button id="loadMore" class="button"><span>Get Posts</span></button><br><br>
+
+    <button onclick="location.href = 'createpost.html';" id="myButton" class="button" ><span>Create post</span></button><br><br>
+
+    <button onclick="location.href = 'updatepost.html';" id="myButton" class="button"><span>Update post</span></button><br><br>
+
+    <input type="text" placeholder="Type Id of post..." id="myInput"><br>
+	<button id="getbyid" class="button"><span>Get by ID</span></button><br>
+	
+	<input type="text" placeholder="Type Id to Delete..." id="deltepost"><br>
+	<button id="del" class="button"><span>Delete by ID</span></button><br>
+	
+
+	
+	<section> 
+		<h1>Information</h1> 
+
+		<!-- TABLE CONSTRUCTION-->
+		<table id='table'> 
+			<!-- HEADING FORMATION -->
+			<tr> 
+				<th>ID</th> 
+				<th>Title</th> 
+				<th>Description</th> 
+				<th>Published</th> 
+			</tr> 
+
+			<script>
+ 
+				// $(document).ready(function () { 
+				document.getElementById("loadMore").onclick = function(){	
+						// FETCHING DATA FROM JSON FILE 
+						$.getJSON("http://localhost:8080/api/tutorials", 
+								function (data) { 
+							var student = ''; 
+
+							// ITERATING THROUGH OBJECTS 
+							$.each(data, function (key, value) { 
+
+								//CONSTRUCTION OF ROWS HAVING 
+								// DATA FROM JSON OBJECT 
+								student += '<tr>'; 
+								student += '<td>' + 
+									value.id + '</td>'; 
+
+								student += '<td>' + 
+									value.title + '</td>'; 
+
+								student += '<td>' + 
+									value.description + '</td>'; 
+
+								student += '<td>' + 
+									value.published + '</td>'; 
+
+								student += '</tr>'; 
+							}); 
+						
+							//INSERTING ROWS INTO TABLE 
+							$('#table').append(student); 
+						});
+
+					
+				};
+				document.getElementById("getbyid").onclick = function(){	
+						// FETCHING DATA FROM JSON FILE 
+						var inputVal = document.getElementById("myInput").value;
+						$.getJSON("http://localhost:8080/api/tutorials/"+inputVal, 
+								function (data) { 
+							var student = ''; 
+
+
+							student += '<tr>'; 
+							student += '<td>' + 
+									data.id + '</td>'; 
+
+							student += '<td>' + 
+									data.title + '</td>'; 
+
+							student += '<td>' + 
+									data.description + '</td>'; 
+
+							student += '<td>' + 
+									data.published + '</td>'; 
+
+							student += '</tr>'; 
+							// ); 
+						
+							//INSERTING ROWS INTO TABLE 
+							$('#table').append(student); 
+						});
+						 
+					
+				};
+				document.getElementById("del").onclick=function(){
+					var inputdel=document.getElementById("deltepost").value
+					$.ajax({
+    						url: "http://localhost:8080/api/tutorials/"+document.getElementById("deltepost").value,
+    						type: 'DELETE',
+    						success: function(result) {
+        							alert("Post Deleted");
+        							// Do something with the result
+    						}
+					});
+
+				}
+			</script> 
+	</section> 
+</body> 
+
+</html> 
+
+
